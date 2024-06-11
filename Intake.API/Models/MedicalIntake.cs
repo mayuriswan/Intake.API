@@ -66,5 +66,17 @@
       
         public ICollection<MedCondition>? MedConditions { get; set; }
         public ICollection<SugCondition>? SugConditions { get; set; }
+
+        // New property for step 8
+        public string? DiagnosedConditions { get; set; }
+
+        // new property for step 9
+        public bool IsSubmitted { get; set; }
+        public bool? FeelingDown { get; set; }
+        public bool? LittleInterest { get; set; }
+        public bool? WantHelp { get; set; }
+        public bool? UnsafeAtHome { get; set; }
+        public string? TherapyGoals { get; set; }
+        public string? OtherProblems { get; set; }
     }
 }

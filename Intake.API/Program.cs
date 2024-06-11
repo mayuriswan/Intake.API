@@ -1,3 +1,4 @@
+using Intake.Api.Extentions;
 using Intake.API.Data;
 using Microsoft.EntityFrameworkCore;
 
@@ -34,7 +35,7 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 
 app.UseAuthorization();
-
+app.ApplyMigrations();
 app.MapControllers();
 app.UseCors("AllowAll");
 

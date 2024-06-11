@@ -4,6 +4,7 @@ using Intake.API.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Intake.API.Migrations
 {
     [DbContext(typeof(IntakeDbContext))]
-    partial class IntakeDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240610153638_step 8")]
+    partial class step8
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -125,9 +128,6 @@ namespace Intake.API.Migrations
                     b.Property<string>("Email")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<bool?>("FeelingDown")
-                        .HasColumnType("bit");
-
                     b.Property<string>("FirstName")
                         .HasColumnType("nvarchar(max)");
 
@@ -152,17 +152,11 @@ namespace Intake.API.Migrations
                     b.Property<string>("ImplantedDeviceDetails")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<bool>("IsSubmitted")
-                        .HasColumnType("bit");
-
                     b.Property<string>("LastName")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("LatexSensitive")
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool?>("LittleInterest")
-                        .HasColumnType("bit");
 
                     b.Property<string>("MaritalStatus")
                         .HasColumnType("nvarchar(max)");
@@ -171,9 +165,6 @@ namespace Intake.API.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("MiddleName")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("OtherProblems")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("PhysicalActivity")
@@ -216,20 +207,11 @@ namespace Intake.API.Migrations
                     b.Property<string>("SymptomStatus")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("TherapyGoals")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("TreatmentBefore")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("TreatmentReceived")
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool?>("UnsafeAtHome")
-                        .HasColumnType("bit");
-
-                    b.Property<bool?>("WantHelp")
-                        .HasColumnType("bit");
 
                     b.Property<string>("WorkNumber")
                         .HasColumnType("nvarchar(max)");
@@ -559,83 +541,6 @@ namespace Intake.API.Migrations
                             Id = 37,
                             Name = "Ulcers",
                             Status = true
-                        });
-                });
-
-            modelBuilder.Entity("Intake.API.Models.RefFamilyDiagnoses", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Status")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("RefFamilyDiagnoses");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            Name = "Blood Clots",
-                            Status = "Active"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            Name = "Heart Problems",
-                            Status = "Active"
-                        },
-                        new
-                        {
-                            Id = 3,
-                            Name = "Stroke",
-                            Status = "Active"
-                        },
-                        new
-                        {
-                            Id = 4,
-                            Name = "Cancer",
-                            Status = "Active"
-                        },
-                        new
-                        {
-                            Id = 5,
-                            Name = "Diabetes",
-                            Status = "Active"
-                        },
-                        new
-                        {
-                            Id = 6,
-                            Name = "High Blood Pressure",
-                            Status = "Active"
-                        },
-                        new
-                        {
-                            Id = 7,
-                            Name = "Thyroid Problems",
-                            Status = "Active"
-                        },
-                        new
-                        {
-                            Id = 8,
-                            Name = "Depression",
-                            Status = "Active"
-                        },
-                        new
-                        {
-                            Id = 9,
-                            Name = "Tuberculosis",
-                            Status = "Active"
                         });
                 });
 
