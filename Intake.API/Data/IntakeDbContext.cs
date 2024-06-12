@@ -19,6 +19,8 @@ namespace Intake.API.Data
         public DbSet<SugCondition> SugConditions { get; set; }
         public DbSet<RefDiagnosedConditions> RefDiagnosedConditions { get; set; }
         public DbSet<RefFamilyDiagnoses> RefFamilyDiagnoses { get; set; }
+        public DbSet<Config> ConfigTable { get; set; } // Add this line
+
 
 
 
@@ -153,7 +155,14 @@ namespace Intake.API.Data
         new RefFamilyDiagnoses { Id = 8, Name = "Depression", Status = "Active" },
         new RefFamilyDiagnoses { Id = 9, Name = "Tuberculosis", Status = "Active" }
     );
-
+            modelBuilder.Entity<Config>().HasData(
+        new Config
+        {
+            Id = 1,
+            Email = "admin@example.com",
+            EmailBody = "<p>Your intake form has been successfully submitted. Thank you!</p>"
+        }
+    );
         }
     }
 }

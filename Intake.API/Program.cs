@@ -22,6 +22,7 @@ builder.Services.AddCors(options =>
             .AllowAnyMethod()
             .AllowAnyHeader());
 });
+builder.Services.AddSingleton<EmailService>();
 
 var app = builder.Build();
 

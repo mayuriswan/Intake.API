@@ -1,11 +1,13 @@
 ﻿using Intake.API.Data;
 using Intake.API.Models;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
+using System;
+using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
-using Intake.API.Data;
-using Microsoft.EntityFrameworkCore;
+using System.Threading.Tasks;
 
 namespace Intake.API.Controllers
 {
@@ -13,11 +15,13 @@ namespace Intake.API.Controllers
     [ApiController]
     public class MedicalIntakesController : ControllerBase
     {
-        private readonly API.Data.IntakeDbContext _context;
+        private readonly IntakeDbContext _context;
+        private readonly EmailService _emailService;
 
-        public MedicalIntakesController(API.Data.IntakeDbContext context)
+        public MedicalIntakesController(IntakeDbContext context, EmailService emailService)
         {
             _context = context;
+            _emailService = emailService;
         }
 
         [HttpPost]
@@ -37,7 +41,7 @@ namespace Intake.API.Controllers
 
         [HttpGet("{referenceNumber}")]
         public async Task<IActionResult> GetIntakeByReference(string referenceNumber)
-                {
+        {
             var intake = await _context.MedicalIntakes
                 .FirstOrDefaultAsync(i => i.ReferenceNumber == referenceNumber);
 
@@ -48,6 +52,7 @@ namespace Intake.API.Controllers
 
             return Ok(intake);
         }
+
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateMedicalIntake(int id, [FromBody] MedicalIntake intake)
         {
@@ -121,6 +126,20 @@ namespace Intake.API.Controllers
 
             await _context.SaveChangesAsync();
 
+            // Send email if the form is submitted
+            if (intake.IsSubmitted)
+            {
+                var config = await _context.ConfigTable.FirstOrDefaultAsync();
+                if (config != null)
+                {
+                    await _emailService.SendEmailAsync(
+                        new string[] { intake.Email, config.Email },
+                        $"Intake form {intake.ReferenceNumber} successfully submitted",
+                        config.EmailBody
+                    );
+                }
+            }
+
             return NoContent();
         }
 
@@ -128,6 +147,7 @@ namespace Intake.API.Controllers
         {
             return _context.MedicalIntakes.Any(e => e.Id == id);
         }
+
         private string GenerateReferenceNumber()
         {
             const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
