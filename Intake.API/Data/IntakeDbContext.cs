@@ -1,5 +1,7 @@
 ﻿using Intake.API.Models;
 using Microsoft.EntityFrameworkCore;
+using System.Security.Cryptography;
+using System.Text;
 
 namespace Intake.API.Data
 {
@@ -20,13 +22,18 @@ namespace Intake.API.Data
         public DbSet<RefDiagnosedConditions> RefDiagnosedConditions { get; set; }
         public DbSet<RefFamilyDiagnoses> RefFamilyDiagnoses { get; set; }
         public DbSet<Config> ConfigTable { get; set; } // Add this line
-
+                                                       // New DbSets for User, UserLoginLog, and ConfigTable
+        public DbSet<User> Users { get; set; }
+        public DbSet<UserLoginLog> UserLoginLogs { get; set; }
 
 
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
+            modelBuilder.Entity<User>()
+               .HasIndex(u => u.Username)
+               .IsUnique();
             modelBuilder.Entity<MedBodyParts>()
             .HasOne(bp => bp.MedicalIntake)
             .WithMany(mi => mi.BodyParts)
@@ -155,6 +162,22 @@ namespace Intake.API.Data
         new RefFamilyDiagnoses { Id = 8, Name = "Depression", Status = "Active" },
         new RefFamilyDiagnoses { Id = 9, Name = "Tuberculosis", Status = "Active" }
     );
+            modelBuilder.Entity<User>().HasData(
+               new User
+               {
+                   Id = 1,
+                   Username = "admin",
+                   PasswordHash = HashPassword("Admin123!"), // Password hash for "Admin123!"
+                   Role = "Admin"
+               },
+               new User
+               {
+                   Id = 2,
+                   Username = "regularuser",
+                   PasswordHash = HashPassword("User123!"), // Password hash for "User123!"
+                   Role = "Regular"
+               }
+           );
             modelBuilder.Entity<Config>().HasData(
         new Config
         {
@@ -164,5 +187,15 @@ namespace Intake.API.Data
         }
     );
         }
+        private string HashPassword(string password)
+        {
+            using (var sha256 = SHA256.Create())
+            {
+                var bytes = Encoding.UTF8.GetBytes(password);
+                var hash = sha256.ComputeHash(bytes);
+                return Convert.ToBase64String(hash);
+            }
+        }
     }
+
 }
