@@ -6,5 +6,6 @@
         public string Username { get; set; }
         public string PasswordHash { get; set; } // Store hashed passwords
         public string Role { get; set; } // "Admin" or "Regular"
+        public string Name { get; set; }
     }
 }

@@ -168,14 +168,17 @@ namespace Intake.API.Data
                    Id = 1,
                    Username = "admin",
                    PasswordHash = HashPassword("Admin123!"), // Password hash for "Admin123!"
-                   Role = "Admin"
+                   Role = "Admin",
+                   Name ="Admin User"
                },
                new User
                {
                    Id = 2,
                    Username = "regularuser",
                    PasswordHash = HashPassword("User123!"), // Password hash for "User123!"
-                   Role = "Regular"
+                   Role = "Regular",
+                   Name = "Regular User"
+                   
                }
            );
             modelBuilder.Entity<Config>().HasData(
